@@ -12,5 +12,8 @@ public class BasicTest extends BaseTest {
 
         Thread.sleep(5000);
 
+        System.out.println(username);
+        System.out.println(password);
+
     }
 }
