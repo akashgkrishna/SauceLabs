@@ -16,7 +16,6 @@ A Selenium-based test automation framework for the BookCart web application, sup
 - [Project Structure](#project-structure)
 - [Best Practices](#best-practices)
 - [Next Steps](#next-steps)
-- [License](#license)
 
 ## Features
 - Environment-specific configuration (QA/Prod/Staging)
