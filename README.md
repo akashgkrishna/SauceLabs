@@ -66,7 +66,9 @@ Run with specific environment:
 
 ### Supported Environments
 `-Denv=qa      # QA environment (default)`
+
 `-Denv=prod    # Production environment`
+
 `-Denv=staging # Staging environment` 
     
 
