@@ -1,21 +1,22 @@
-
 # BookCart Test Automation Framework
 
-[![Java](https://img.shields.io/badge/Java-22-blue)](https://www.java.com/)
-[![Selenium](https://img.shields.io/badge/Selenium-4.27.0-green)](https://www.selenium.dev/)
-[![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red)](https://testng.org/)
+[![Java](https://img.shields.io/badge/Java-22-blue)](https://www.java.com/)  [![Selenium](https://img.shields.io/badge/Selenium-4.27.0-green)](https://www.selenium.dev/)  [![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red)](https://testng.org/)  [![Logback](https://img.shields.io/badge/Logback-1.5.16-lightgrey)](https://logback.qos.ch/)
 
-A Selenium-based test automation framework for the BookCart web application, supporting multiple environments.
+A Selenium-based test automation framework for the BookCart web application, supporting multiple environments and custom logging.
 
 ## Table of Contents
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running Tests](#running-tests)
-- [Project Structure](#project-structure)
-- [Best Practices](#best-practices)
-- [Next Steps](#next-steps)
+
+-   [Features](#features)
+-   [Prerequisites](#prerequisites)
+-   [Installation](#installation)
+-   [Configuration](#configuration)
+-   [Execution](#execution)
+-   [Logging](#logging)
+-   [Project Structure](#project-structure)
+-   [Best Practices](#best-practices)
+-   [Future Roadmap](#future-roadmap)
+-   [License](#license)
+
 
 ## Features
 - Environment-specific configuration (QA/Prod/Staging)
@@ -23,71 +24,166 @@ A Selenium-based test automation framework for the BookCart web application, sup
 - Page Object Model (POM) ready structure
 - TestNG integration for test execution
 - Configurable through properties files
+- Custom Logging with LogManager & CustomLogger implementations
+- SLF4J/Logback Integration with Console & File Logging
 
 ## Prerequisites
-- Java JDK 22
-- Maven 3.6+
-- Chrome Browser (latest version)
-- IDE (IntelliJ/Eclipse)
+
+-   **Java 22 JDK**
+-   **Maven 3.6+**
+-   **Chrome Browser (latest)**
+-   **IDE** (IntelliJ/Eclipse/VSCode)
 
 ## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/bookcart-automation.git
-2.  Build the project:
-    
- 
-    `mvn clean install` 
-    
+
+1. Clone the repository:  
+   `git clone git@github.com:akashgkrishna/BookCart.git `
+2. Build the project:  
+   `mvn clean install`
 
 ## Configuration
 
-1.  Environment setup:
-    
-    -   Edit `src/main/resources/config.properties` to modify environment URLs
-    -   Supported environments: QA, Prod, Staging
-    -   Default environment: QA
-2.  Browser configuration:
-    
-    -   Managed automatically by WebDriverManager
-    -   Chrome is the default browser
+### Environment Setup: (`config.properties`)
+- Edit `src/main/resources/config.properties` to modify environment URLs
+- Supported environments: QA, Prod, Staging
+- Default environment: QA
+```properties
+# Environment URLs
+qa.url=https://bookcart.azurewebsites.net/
+staging.url=https://staging-bookcart.azurewebsites.net/
+prod.url=https://prod-bookcart.azurewebsites.net/
 
-## Running Tests
+# Credentials
+qa.username=qa_user
+qa.password=qa_password
+staging.username=staging_user
+staging.password=staging_password
+prod.username=prod_user
+prod.password=prod_password
 
-### Command Line
+```
 
-Run all tests with default (QA) environment:
+### Log Configuration: (`logback.xml`)
 
-`mvn test` 
+```xml
+<!-- Configure logging patterns and output locations -->
+<root level="trace">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+</root>
 
-Run with specific environment:
+```
+### Browser setup:
+- Managed automatically by WebDriverManager
+- Chrome is the default browser
 
-`mvn test -Denv=prod` 
+## Execution
 
-### Supported Environments
-`-Denv=qa      # QA environment (default)`
+### Default (QA Environment):
 
-`-Denv=prod    # Production environment`
+```bash
+mvn test
+```
 
-`-Denv=staging # Staging environment` 
-    
+### Specific Environment:
+
+```bash
+mvn test -Denv=prod
+```
+
+### Supported Environments:
+
+-   `-Denv=qa` (default)
+-   `-Denv=staging`
+-   `-Denv=prod`
+
+## Logging
+
+### Usage in Tests:
+
+```java
+public class BasicTest extends BaseTest {
+    @Test
+    public void exampleTest() {
+        logger.info("Using credentials: {}", username);
+        logger.error("Validation failed!");
+    }
+}
+
+```
+
+### Log Outputs:
+
+```
+14:23:45 INFO  [TestNG] o.b.BasicTest - Using credentials: test01
+14:23:46 ERROR [TestNG] o.b.BasicTest - Validation failed!
+
+```
 
 ## Project Structure
 
-![enter image description here](https://github.com/user-attachments/assets/9ad19303-4a46-462f-9089-0616a8c219d7)
+```
+bookcart-automation/
+├── src/
+│   ├── main/
+│   │   ├── java/org/bookcart/
+│   │   │   ├── base/              # Test base classes
+│   │   │   └── util/              # Framework utilities
+│   │   │       ├── logging/       # Custom logging implementation
+│   │   │       │   ├── LogManager.java
+│   │   │       │   └── CustomLogger.java
+│   │   │       ├── ConfigManager.java
+│   │   │       └── CredentialsManager.java
+│   │   └── resources/             # Configuration files
+│   └── test/
+│       ├── java/                  # Test implementations
+│       └── resources/             # TestNG configuration
+├── pom.xml
+└── README.md
 
+```
 
 ## Best Practices
 
--   **Page Object Model**: Ready for POM implementation
--   **Environment Handling**: Easy switch between different environments
--   **Configuration**: Externalized properties for easy maintenance
+### Logger Usage
 
-## Next Steps
+```java
+// Good
+logger.info("Loading page: {}", url);
 
--   Add more test cases for application features
--   Implement Page Object Model pattern
--   Add logging with Log4j2
--   Integrate with CI/CD pipelines
--   Generate reports
+// Avoid
+System.out.println("Loading page: " + url);
 
+```
+
+### Environment Isolation
+
+```bash
+# Never commit production credentials
+# Keep sensitive data in environment variables
+
+```
+
+### Driver Management
+
+```java
+@AfterMethod
+public void tearDown() {
+    if(driver != null) driver.quit();
+}
+
+```
+
+## Future Roadmap
+
+-   Implement Test Reports
+-   Add BrowserStack Integration
+-   Create CI/CD Pipeline
+
+## Report Issues
+
+-   [GitHub Issues](https://github.com/akashgkrishna/BookCart/issues)
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/akashgkrishna/BookCart/blob/main/LICENSE)

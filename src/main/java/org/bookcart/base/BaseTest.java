@@ -2,16 +2,16 @@ package org.bookcart.base;
 
 import org.bookcart.util.ConfigManager;
 import org.bookcart.util.CredentialsManager;
-import org.bookcart.util.LoggerManager;
+import org.bookcart.util.logging.CustomLogger;
+import org.bookcart.util.logging.LogManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.slf4j.Logger;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
     // Logger for all child classes
-    protected final Logger logger = LoggerManager.getLogger(this.getClass());
+    protected final CustomLogger logger = LogManager.getLogger(this.getClass());
     protected WebDriver driver;
     protected String username;
     protected String password;
