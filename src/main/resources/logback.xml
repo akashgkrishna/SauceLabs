@@ -17,7 +17,7 @@
     </appender>
 
     <!-- Root Logger (Logs Everything) -->
-    <root level="trace">
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
