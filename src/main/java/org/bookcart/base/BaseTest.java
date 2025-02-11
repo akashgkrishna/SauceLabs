@@ -1,13 +1,18 @@
 package org.bookcart.base;
 
+import io.qameta.allure.Attachment;
 import org.bookcart.util.ConfigManager;
 import org.bookcart.util.CredentialsManager;
 import org.bookcart.util.logging.CustomLogger;
 import org.bookcart.util.logging.LogManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
 
 public class BaseTest {
     // Logger for all child classes
@@ -46,12 +51,20 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE && driver != null) {
+            captureScreenshot();
+        }
         if (driver != null) {
             driver.quit(); // Closes the browser
             logger.info("Browser closed.");
         } else {
             logger.warn("WebDriver instance was null during tear down.");
         }
+    }
+
+    @Attachment(value = "Page Screenshot", type = "image/png")
+    public byte[] captureScreenshot() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 }
