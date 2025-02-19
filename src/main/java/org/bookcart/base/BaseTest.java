@@ -3,10 +3,9 @@ package org.bookcart.base;
 import io.qameta.allure.Attachment;
 import org.bookcart.util.ConfigManager;
 import org.bookcart.util.CredentialsManager;
+import org.bookcart.util.ScreenshotUtils;
 import org.bookcart.util.logging.CustomLogger;
 import org.bookcart.util.logging.LogManager;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestResult;
@@ -53,7 +52,10 @@ public class BaseTest {
     @AfterMethod
     public void tearDown(ITestResult result) {
         if (result.getStatus() == ITestResult.FAILURE && driver != null) {
-            captureScreenshot();
+            byte[] screenshot = ScreenshotUtils.capture(driver);
+            if (screenshot.length > 0) {
+                attachScreenshot(screenshot);
+            }
         }
         if (driver != null) {
             driver.quit(); // Closes the browser
@@ -64,7 +66,7 @@ public class BaseTest {
     }
 
     @Attachment(value = "Page Screenshot", type = "image/png")
-    public byte[] captureScreenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    private byte[] attachScreenshot(byte[] screenshot) {
+        return screenshot;
     }
 }
