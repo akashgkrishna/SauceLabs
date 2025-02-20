@@ -1,6 +1,8 @@
 package org.bookcart.base;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import org.bookcart.util.ConfigManager;
 import org.bookcart.util.CredentialsManager;
 import org.bookcart.util.ScreenshotUtils;
@@ -32,6 +34,8 @@ public class BaseTest {
 
         // Fetch the corresponding URL from config.properties
         baseUrl = ConfigManager.getProperty(environment + ".url");
+        Allure.step("Opened "+baseUrl);
+        
         if (baseUrl == null || baseUrl.isEmpty()) {
             logger.error("Base URL is missing in config.properties for {}", environment);
             throw new RuntimeException("Base URL is not configured in config.properties.");
