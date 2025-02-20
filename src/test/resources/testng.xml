@@ -4,8 +4,16 @@
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
     <test name="BasicTest">
-        <classes>
-            <class name="org.bookcart.BasicTest"/>
-        </classes>
+        <packages>
+            <package name="org.bookcart"/>
+        </packages>
+    </test>
+
+    <test name="LoginTest">
+        <packages>
+            <package name="org.bookcart.login"/>
+        </packages>
+
+
     </test>
 </suite>
