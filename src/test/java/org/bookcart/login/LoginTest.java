@@ -5,8 +5,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
 import org.bookcart.base.BaseTest;
-import org.bookcart.pages.LoginPage;
-import org.bookcart.pages.common.Header;
+import org.bookcart.flows.LoginFlow;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -22,13 +21,10 @@ public class LoginTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void validLoginTest() {
         //Arrange
-        Header header = new Header(driver);
-        LoginPage loginPage = new LoginPage(driver);
+        LoginFlow loginFlow = new LoginFlow(driver);
 
         //Act
-        header.clickOnLoginButton();
-        loginPage.enterCredentials(username, password);
-        loginPage.clickOnLoginButton();
+        loginFlow.login(username, password);
 
         //Assert
         // TODO Make a common method for these kind of scenarios
