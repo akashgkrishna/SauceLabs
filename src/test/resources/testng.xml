@@ -13,7 +13,5 @@
         <packages>
             <package name="org.bookcart.login"/>
         </packages>
-
-
     </test>
 </suite>
