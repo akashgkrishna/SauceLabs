@@ -2,10 +2,25 @@ package org.bookcart.util;
 
 import org.bookcart.util.logging.CustomLogger;
 import org.bookcart.util.logging.LogManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class WaitUtil {
-     public static CustomLogger logger = LogManager.getLogger(WaitUtil.class);
+import java.time.Duration;
 
+public class WaitUtils {
+    public static CustomLogger logger = LogManager.getLogger(WaitUtils.class);
+    public WebDriverWait wait;
+    public WebDriver driver;
+
+    public WaitUtils(WebDriver driver){
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+    public String waitForTitle(String expectedTitle){
+        wait.until(ExpectedConditions.titleIs(expectedTitle));
+        return driver.getTitle();
+    }
     public static void forcedDelay(int seconds) {
         try {
             Thread.sleep(seconds * 1000L);
@@ -15,4 +30,6 @@ public class WaitUtil {
             logger.error("Forced Delay Failed: ", e);
         }
     }
+
+
 }
