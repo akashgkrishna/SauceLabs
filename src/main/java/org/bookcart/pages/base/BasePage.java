@@ -8,11 +8,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public class BasePage {
     private static final int TIMEOUT = 10;
+    private static final Logger log = LoggerFactory.getLogger(BasePage.class);
     protected final WebDriver driver;
     protected final CustomLogger logger;
 
@@ -36,6 +39,13 @@ public class BasePage {
         WebElement element = waitForClickable(locator);
         element.click();
         logger.info("Clicked {}", locator);
+    }
+
+    @Step("Checking {locator} element displayed")
+    public boolean isDisplayed(By locator){
+        WebElement element = waitForClickable(locator);
+        logger.info("Checking {} element displayed", locator);
+        return element.isDisplayed();
     }
 
     public WebElement waitForClickable(By locator) {
