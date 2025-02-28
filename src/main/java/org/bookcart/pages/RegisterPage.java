@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
+    private final String passwordErrorMessage = "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number";
     private final By firstNameTextField = By.xpath("//input[@placeholder='First name']");
     private final By lastNameTextField = By.xpath("//input[@placeholder='Last Name']");
     private final By userNameTextField = By.xpath("//input[@placeholder='User name']");
@@ -16,6 +17,9 @@ public class RegisterPage extends BasePage {
     private final By maleGenderRadioButton = By.id("mat-radio-0");
     private final By femaleGenderRadioButton = By.id("mat-radio-3-input");
     private final By registerButton = By.xpath("//span[text()='Register']");
+    private final By invalidUsernameErrorMessage = By.xpath("//mat-error[text()='User Name is not available']");
+    private final By invalidPasswordErrorMessage = By.xpath("//mat-error[contains(text(), '"+passwordErrorMessage+"')]");
+    private final By passwordNotMatchingError = By.xpath("//mat-error[text()= ' Password do not match ']");
 
     public RegisterPage(WebDriver driver) {
         super(driver);
@@ -41,5 +45,17 @@ public class RegisterPage extends BasePage {
         //  tried with WebDriverWait but not working.
         WaitUtils.forcedDelay(1);
         click(registerButton);
+    }
+
+    public boolean isUsernameErrorMessageDisplayed(){
+        return isDisplayed(invalidUsernameErrorMessage);
+    }
+
+    public boolean isInvalidPasswordErrorMessageDisplayed(){
+        return isDisplayed(invalidPasswordErrorMessage);
+    }
+
+    public boolean isPasswordNotMatchingErrorMessageDisplayed(){
+        return isDisplayed(passwordNotMatchingError);
     }
 }

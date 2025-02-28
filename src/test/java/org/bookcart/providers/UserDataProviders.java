@@ -11,4 +11,28 @@ public class UserDataProviders {
                 {UserDataFactory.defaultUser()}
         };
     }
+
+    @DataProvider
+    public Object[][] invalidRegistrationData() {
+        return new Object[][]{
+                {UserDataFactory.invalidUserName()}
+        };
+    }
+
+    @DataProvider
+    public Object[][] invalidPasswordsRegistrationData() {
+        return new Object[][]{
+                {UserDataFactory.passwordLessThanEightCharacters()},
+                {UserDataFactory.passwordWithoutUpperCase()},
+                {UserDataFactory.passwordWithoutNumber()}
+        };
+    }
+
+    @DataProvider
+    public Object[][] mismatchedPasswordRegistrationData() {
+        return new Object[][]{
+                {UserDataFactory.nonMatchingPasswords()}
+        };
+    }
+
 }
