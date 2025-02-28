@@ -3,8 +3,8 @@ package org.bookcart.util;
 import org.bookcart.util.logging.CustomLogger;
 import org.bookcart.util.logging.LogManager;
 
-public class TestUtils {
-     public static CustomLogger logger = LogManager.getLogger(TestUtils.class);
+public class WaitUtil {
+     public static CustomLogger logger = LogManager.getLogger(WaitUtil.class);
 
     public static void forcedDelay(int seconds) {
         try {
