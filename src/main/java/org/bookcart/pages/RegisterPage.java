@@ -1,8 +1,9 @@
 package org.bookcart.pages;
 
+import io.qameta.allure.Step;
 import org.bookcart.model.User;
 import org.bookcart.pages.base.BasePage;
-import org.bookcart.util.TestUtils;
+import org.bookcart.util.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -20,6 +21,7 @@ public class RegisterPage extends BasePage {
         super(driver);
     }
 
+    @Step("Entering new user details")
     public void enterNewUserDetails(User user) {
         sendKeys(user.getFirstName(), firstNameTextField);
         sendKeys(user.getLastName(), lastNameTextField);
@@ -37,7 +39,7 @@ public class RegisterPage extends BasePage {
     public void clickOnRegisterButton() {
         // TODO The element is getting clicked but nothing happens in website,
         //  tried with WebDriverWait but not working.
-        TestUtils.forcedDelay(1);
+        WaitUtils.forcedDelay(1);
         click(registerButton);
     }
 }

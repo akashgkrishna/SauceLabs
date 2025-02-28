@@ -1,5 +1,6 @@
 package org.bookcart.pages;
 
+import io.qameta.allure.Step;
 import org.bookcart.pages.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,7 @@ public class LoginPage extends BasePage {
     }
 
     // Methods
+    @Step("Entering Credentials")
     public void enterCredentials(String username, String password) {
         sendKeys(username, usernameTextField);
         sendKeys(password, passwordTextField);
