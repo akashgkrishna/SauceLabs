@@ -3,26 +3,45 @@ package org.bookcart.pages;
 import io.qameta.allure.Step;
 import org.bookcart.model.User;
 import org.bookcart.pages.base.BasePage;
+import org.bookcart.util.MessageUtils;
 import org.bookcart.util.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends BasePage {
-    private final String passwordErrorMessage = "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number";
+
+    // Basic form element locators
     private final By firstNameTextField = By.xpath("//input[@placeholder='First name']");
     private final By lastNameTextField = By.xpath("//input[@placeholder='Last Name']");
     private final By userNameTextField = By.xpath("//input[@placeholder='User name']");
     private final By passwordTextField = By.xpath("//input[@placeholder='Password']");
     private final By confirmPasswordTextField = By.xpath("//input[@placeholder='Confirm Password']");
+
+    // Gender radio buttons
     private final By maleGenderRadioButton = By.id("mat-radio-0");
     private final By femaleGenderRadioButton = By.id("mat-radio-3-input");
+
     private final By registerButton = By.xpath("//span[text()='Register']");
-    private final By invalidUsernameErrorMessage = By.xpath("//mat-error[text()='User Name is not available']");
-    private final By invalidPasswordErrorMessage = By.xpath("//mat-error[contains(text(), '"+passwordErrorMessage+"')]");
-    private final By passwordNotMatchingError = By.xpath("//mat-error[text()= ' Password do not match ']");
+
+    // Error locators using helper method getErrorMessageLocator
+    private final By invalidUsernameError = getErrorMessageLocator("invalid.username");
+    private final By invalidPasswordError = getErrorMessageLocator("invalid.password");
+    private final By passwordNotMatchingError = getErrorMessageLocator("password.not.match");
 
     public RegisterPage(WebDriver driver) {
         super(driver);
+    }
+
+    /**
+     * Helper method that creates a xpath for error messages based on a message key.
+     * The message is fetched from messages.properties file using MessageUtils.
+     *
+     * @param messageKey the key identifying the error message
+     * @return a By locator for the error message element
+     */
+    private By getErrorMessageLocator(String messageKey) {
+        String message = MessageUtils.getMessage(messageKey);
+        return By.xpath(String.format("//mat-error[normalize-space()='%s']", message));
     }
 
     @Step("Entering new user details")
@@ -41,21 +60,24 @@ public class RegisterPage extends BasePage {
     }
 
     public void clickOnRegisterButton() {
-        // TODO The element is getting clicked but nothing happens in website,
-        //  tried with WebDriverWait but not working.
+        // TEMPORARY: Forced delay to workaround form submission issue
         WaitUtils.forcedDelay(1);
         click(registerButton);
     }
 
-    public boolean isUsernameErrorMessageDisplayed(){
-        return isDisplayed(invalidUsernameErrorMessage);
+    // Error visibility checks
+    @Step("Verify username error is displayed")
+    public boolean isUsernameErrorMessageDisplayed() {
+        return isDisplayed(invalidUsernameError);
     }
 
-    public boolean isInvalidPasswordErrorMessageDisplayed(){
-        return isDisplayed(invalidPasswordErrorMessage);
+    @Step("Verify password error is displayed")
+    public boolean isInvalidPasswordErrorMessageDisplayed() {
+        return isDisplayed(invalidPasswordError);
     }
 
-    public boolean isPasswordNotMatchingErrorMessageDisplayed(){
+    @Step("Verify password mismatch error is displayed")
+    public boolean isPasswordNotMatchingErrorMessageDisplayed() {
         return isDisplayed(passwordNotMatchingError);
     }
 }
