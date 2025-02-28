@@ -14,4 +14,10 @@
             <package name="org.bookcart.login"/>
         </packages>
     </test>
+
+    <test name="RegistrationTest">
+        <packages>
+            <package name="org.bookcart.userregistration"/>
+        </packages>
+    </test>
 </suite>
