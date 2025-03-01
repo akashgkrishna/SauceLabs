@@ -20,18 +20,17 @@ A Selenium-based, cross-browser test automation framework for the BookCart web a
 
 
 ## Features
-- **Environment-Specific Configuration:** Easily switch between QA, Staging, and Production environments via the `config.properties` file and system properties.
-- **Driver Management:** Uses centralised driver management.
-- **Page Object Model (POM):** Well-organized POM structure with separate packages for base pages, common components, and specialized pages.
-- **Test Flow Abstraction:** Business logic is encapsulated in flow classes (e.g., `LoginFlow` and `UserRegistrationFlow`) to simplify test implementations.
-- **Data-Driven Testing:** Centralised test data generation and TestNG data providers ensures unique test runs.
-- **Enhanced Reporting with Allure:** - Step annotations and screenshots on test failure are automatically attached to Allure reports. - Clear test descriptions, severity levels, and traceability with TMS links.
-- **Custom Logging:** Uses SLF4J/Logback with custom logger implementations to provide clear and secure logging output.
-- **Synchronization & Waits:** Leverages explicit waits via `WebDriverWait` and a custom `WaitUtils` class to ensure reliable test execution.
-- **Lombok Integration**  - Clean model classes with  `@Builder`  pattern.
-- **AspectJ Weaving**  - Runtime instrumentation for enhanced reporting.
-- **Smart Waits**: Combination of explicit waits and utility methods.
-- **Headless Execution**: Configurable via  `config.properties`.
+-   **Environment Config**: Easily switch between QA, Staging, and Production via `config.properties` and system properties.
+-   **Driver Management**: Centralized driver handling.
+-   **Page Object Model (POM)**: Structured POM with separate packages for base pages, common components, and specialized pages.
+-   **Test Flow Abstraction**: Business logic encapsulated in flow classes (e.g., `LoginFlow`, `UserRegistrationFlow`).
+-   **Data-Driven Testing**: Centralized data generation with TestNG data providers for unique test runs.
+-   **Allure Reporting**: Auto-attached step annotations, failure screenshots, test descriptions, severity levels, and TMS links.
+-   **Custom Logging**: SLF4J/Logback with custom logger for clear, secure logs.
+-   **Lombok Integration**: Clean models with `@Builder`.
+-   **AspectJ Weaving**: Runtime instrumentation for enhanced reporting.
+-   **Smart Waits**: Mix of explicit waits and utility methods.
+-   **Headless Execution**: Configurable via `config.properties`.
 
 ## Prerequisites
 
