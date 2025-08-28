@@ -4,7 +4,6 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import org.bookcart.base.BaseTest;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 public class BasicTest extends BaseTest {
@@ -18,7 +17,7 @@ public class BasicTest extends BaseTest {
         Thread.sleep(2000);
 
         // To make test fail
-        driver.findElement(By.xpath("abc")).click();
+//        driver.findElement(By.xpath("abc")).click();
 
         logger.info("Username: {}", username);
         logger.info("Password: {}", password);
