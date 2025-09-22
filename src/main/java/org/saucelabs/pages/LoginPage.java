@@ -9,6 +9,7 @@ import org.saucelabs.utils.MessageUtils;
 public class LoginPage extends BasePage {
     // Error messages
     String invalidCredentialsMessage = MessageUtils.getMessage("invalid.credentials");
+    String lockedOutUserErrorMessage = MessageUtils.getMessage("locked.out.user");
 
     //Locators
     private final By usernameTextField = By.id("user-name");
@@ -38,6 +39,10 @@ public class LoginPage extends BasePage {
 
     public boolean isInvalidCredentialsErrorDisplayed(){
         return isDisplayed(getErrorMessageLocator(invalidCredentialsMessage));
+    }
+
+    public boolean isLockedOutUserErrorDisplayed(){
+        return isDisplayed(getErrorMessageLocator(lockedOutUserErrorMessage));
     }
 
 }
