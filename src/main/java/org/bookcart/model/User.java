@@ -12,5 +12,4 @@ public class User {
     private final String password;
     private final String confirmPassword;
     private final String gender;
-
 }

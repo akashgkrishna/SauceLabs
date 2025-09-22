@@ -8,14 +8,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public class BasePage {
     private static final int TIMEOUT = 10;
-    private static final Logger log = LoggerFactory.getLogger(BasePage.class);
     protected final WebDriver driver;
     protected final CustomLogger logger;
 
@@ -25,13 +22,13 @@ public class BasePage {
     }
 
 
-//    TODO Removed @Step so that password is not displayed in report
+    //    TODO Removed @Step so that password is not displayed in report
 //    TODO Find a solution for this
 //    @Step("Entering in element {locator}")
     public void sendKeys(String text, By locator) {
         WebElement element = waitForClickable(locator);
         element.sendKeys(text);
-        logger.info("Entered text in {} ",locator);
+        logger.info("Entered text in {} ", locator);
     }
 
     @Step("Click element: {locator}")
@@ -42,7 +39,7 @@ public class BasePage {
     }
 
     @Step("Checking {locator} element displayed")
-    public boolean isDisplayed(By locator){
+    public boolean isDisplayed(By locator) {
         WebElement element = waitForClickable(locator);
         logger.info("Checking {} element displayed", locator);
         return element.isDisplayed();
