@@ -8,6 +8,7 @@ import org.saucelabs.base.BaseTest;
 import org.saucelabs.flows.LoginFlow;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.saucelabs.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -25,22 +26,18 @@ public class NegativeLoginTests extends BaseTest {
     }
 
     @Test(dataProvider = "invalidLoginCredentials")
-    @Description("Verify that login fails when an invalid credentials is entered")
-    @TmsLink("CEL-TC-44")
-    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify login fails with incorrect password")
+    @Severity(SeverityLevel.CRITICAL)
     public void invalidLoginTest(String username, String password) {
         // Arrange
-        LoginFlow loginFlow = new LoginFlow(driver);
-        String expectedTitle = "Login";
+        LoginPage loginPage = new LoginPage(driver);
 
         // Act
-        loginFlow.login(username, password);
+        loginPage.enterCredentials(username, password);
+        loginPage.clickOnLoginButton();
 
         // Assert
-        // The login page does not give any error message
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.titleIs(expectedTitle));
-        Assert.assertEquals(driver.getTitle(), expectedTitle);
-
+        boolean invalidCredentialsErrorDisplayed = loginPage.isInvalidCredentialsErrorDisplayed();
+        Assert.assertTrue(invalidCredentialsErrorDisplayed);
     }
 }
