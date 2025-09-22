@@ -5,19 +5,25 @@
     </listeners>
     <test name="BasicTest">
         <packages>
-            <package name="org.bookcart"/>
+            <package name="org.saucelabs"/>
         </packages>
     </test>
 
     <test name="LoginTest">
         <packages>
-            <package name="org.bookcart.login"/>
+            <package name="org.saucelabs.login"/>
         </packages>
     </test>
 
     <test name="RegistrationTest">
         <packages>
-            <package name="org.bookcart.userregistration"/>
+            <package name="org.saucelabs.userregistration"/>
+        </packages>
+    </test>
+
+    <test name="ShoppingCartTest">
+        <packages>
+            <package name="org.saucelabs.shoppingcart"/>
         </packages>
     </test>
 </suite>
