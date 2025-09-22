@@ -21,7 +21,7 @@ public class UserRegistrationFlow {
     @Step("Navigating To RegisterPage")
     public void navigateToRegisterPage() {
         header.clickOnLoginButton();
-        loginPage.clickOnRegisterButton();
+//        loginPage.clickOnRegisterButton();
     }
 
     public void navigateToRegisterPageAndEnterUserDetails(User user) {

@@ -3,18 +3,20 @@ package org.saucelabs.login;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.TmsLink;
 import org.saucelabs.base.BaseTest;
-import org.saucelabs.flows.LoginFlow;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.saucelabs.pages.InventoryPage;
+import org.saucelabs.pages.LoginPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+import java.awt.*;
 
 public class NegativeLoginTests extends BaseTest {
+    private static final Logger log = LoggerFactory.getLogger(NegativeLoginTests.class);
+    LoginPage loginPage;
     @DataProvider(name = "invalidLoginCredentials")
     public Object[][] invalidLoginCredentials() {
         return new Object[][]{
@@ -24,23 +26,97 @@ public class NegativeLoginTests extends BaseTest {
         };
     }
 
+    @DataProvider(name = "lockedOutUser")
+    public Object[][] lockedOutUser() {
+        return new Object[][]{
+                {"locked_out_user", password}
+        };
+    }
+
+    @DataProvider(name = "performanceGlitchUser")
+    public Object[][] performanceGlitchUser() {
+        return new Object[][] {
+            {"performance_glitch_user", password}
+        };
+    }
+
     @Test(dataProvider = "invalidLoginCredentials")
-    @Description("Verify that login fails when an invalid credentials is entered")
-    @TmsLink("CEL-TC-44")
-    @Severity(SeverityLevel.NORMAL)
-    public void invalidLoginTest(String username, String password) {
+    @Description("Verify login fails with incorrect password")
+    @Severity(SeverityLevel.CRITICAL)
+    public void verifyInvalidLoginTest(String username, String password) {
         // Arrange
-        LoginFlow loginFlow = new LoginFlow(driver);
-        String expectedTitle = "Login";
+        loginPage = new LoginPage(driver);
 
         // Act
-        loginFlow.login(username, password);
+        loginPage.enterCredentials(username, password);
+        loginPage.clickOnLoginButton();
 
         // Assert
-        // The login page does not give any error message
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.titleIs(expectedTitle));
-        Assert.assertEquals(driver.getTitle(), expectedTitle);
-
+        boolean invalidCredentialsErrorDisplayed = loginPage.isInvalidCredentialsErrorDisplayed();
+        Assert.assertTrue(invalidCredentialsErrorDisplayed);
     }
+
+    @Test(dataProvider = "lockedOutUser")
+    @Description("Verify locked-out user cannot login")
+    @Severity(SeverityLevel.CRITICAL)
+    public void verifyLockedOutUserTest(String username, String password){
+        //Arrange
+        loginPage = new LoginPage(driver);
+
+        // Act
+        loginPage.enterCredentials(username, password);
+        loginPage.clickOnLoginButton();
+
+        boolean lockedOutUserErrorDisplayed = loginPage.isLockedOutUserErrorDisplayed();
+        Assert.assertTrue(lockedOutUserErrorDisplayed);
+    }
+
+    @Test
+    @Description("Verify login fails when fields are empty")
+    @Severity(SeverityLevel.NORMAL)
+    public void verifyEmptyFieldsTest(){
+        //Arrange
+        loginPage = new LoginPage(driver);
+
+        // Act
+        loginPage.clickOnLoginButton();
+
+        //Assert
+        boolean emptyFieldErrorDisplayed = loginPage.isEmptyFieldErrorDisplayed();
+        Assert.assertTrue(emptyFieldErrorDisplayed);
+    }
+
+    @Test
+    @Description("Verify login fails with blank password")
+    @Severity(SeverityLevel.NORMAL)
+    public void verifyEmptyPasswordFieldTest(){
+        //Arrange
+        loginPage = new LoginPage(driver);
+
+        // Act
+        loginPage.enterCredentials(username, "");
+        loginPage.clickOnLoginButton();
+
+        boolean emptyPasswordFieldErrorDisplayed = loginPage.isEmptyPasswordFieldErrorDisplayed();
+        Assert.assertTrue(emptyPasswordFieldErrorDisplayed);
+    }
+
+    @Test(dataProvider = "performanceGlitchUser")
+    @Description("Verify login works but page loads slowly")
+    @Severity(SeverityLevel.MINOR)
+    public void verifyPerformanceGlitchUser(String username, String password){
+        //Arrange
+        loginPage = new LoginPage(driver);
+        InventoryPage inventoryPage = new InventoryPage(driver);
+
+        // Act
+        loginPage.enterCredentials(username, password);
+        loginPage.clickOnLoginButton();
+
+        //Assert
+        inventoryPage.clickOnHamburgerMenu();
+        String logoutText = inventoryPage.getLogoutText();
+        Assert.assertEquals(logoutText, "Logout");
+    }
+
 }
