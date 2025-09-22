@@ -4,12 +4,15 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.saucelabs.base.BaseTest;
+import org.saucelabs.pages.InventoryPage;
 import org.saucelabs.pages.LoginPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.awt.*;
 
 public class NegativeLoginTests extends BaseTest {
     private static final Logger log = LoggerFactory.getLogger(NegativeLoginTests.class);
@@ -27,6 +30,13 @@ public class NegativeLoginTests extends BaseTest {
     public Object[][] lockedOutUser() {
         return new Object[][]{
                 {"locked_out_user", password}
+        };
+    }
+
+    @DataProvider(name = "performanceGlitchUser")
+    public Object[][] performanceGlitchUser() {
+        return new Object[][] {
+            {"performance_glitch_user", password}
         };
     }
 
@@ -90,4 +100,23 @@ public class NegativeLoginTests extends BaseTest {
         boolean emptyPasswordFieldErrorDisplayed = loginPage.isEmptyPasswordFieldErrorDisplayed();
         Assert.assertTrue(emptyPasswordFieldErrorDisplayed);
     }
+
+    @Test(dataProvider = "performanceGlitchUser")
+    @Description("Verify login works but page loads slowly")
+    @Severity(SeverityLevel.MINOR)
+    public void verifyPerformanceGlitchUser(String username, String password){
+        //Arrange
+        loginPage = new LoginPage(driver);
+        InventoryPage inventoryPage = new InventoryPage(driver);
+
+        // Act
+        loginPage.enterCredentials(username, password);
+        loginPage.clickOnLoginButton();
+
+        //Assert
+        inventoryPage.clickOnHamburgerMenu();
+        String logoutText = inventoryPage.getLogoutText();
+        Assert.assertEquals(logoutText, "Logout");
+    }
+
 }

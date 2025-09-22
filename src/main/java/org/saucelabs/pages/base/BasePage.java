@@ -50,9 +50,9 @@ public class BasePage {
                 .until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-    public WebElement waitForVisibility(By locator) {
+    public void waitForVisibility(By locator) {
         WebElement element = driver.findElement(locator);
-        return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
+        new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
                 .until(ExpectedConditions.visibilityOf(element));
     }
 
