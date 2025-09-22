@@ -10,6 +10,8 @@ public class LoginPage extends BasePage {
     // Error messages
     String invalidCredentialsMessage = MessageUtils.getMessage("invalid.credentials");
     String lockedOutUserErrorMessage = MessageUtils.getMessage("locked.out.user");
+    String emptyFieldErrorMessage = MessageUtils.getMessage("empty.field");
+    String emptyPasswordFieldErrorMessage = MessageUtils.getMessage("empty.password");
 
     //Locators
     private final By usernameTextField = By.id("user-name");
@@ -43,6 +45,14 @@ public class LoginPage extends BasePage {
 
     public boolean isLockedOutUserErrorDisplayed(){
         return isDisplayed(getErrorMessageLocator(lockedOutUserErrorMessage));
+    }
+
+    public boolean isEmptyFieldErrorDisplayed(){
+        return isDisplayed(getErrorMessageLocator(emptyFieldErrorMessage));
+    }
+
+    public boolean isEmptyPasswordFieldErrorDisplayed(){
+        return isDisplayed(getErrorMessageLocator(emptyPasswordFieldErrorMessage));
     }
 
 }

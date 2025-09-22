@@ -33,7 +33,7 @@ public class NegativeLoginTests extends BaseTest {
     @Test(dataProvider = "invalidLoginCredentials")
     @Description("Verify login fails with incorrect password")
     @Severity(SeverityLevel.CRITICAL)
-    public void invalidLoginTest(String username, String password) {
+    public void verifyInvalidLoginTest(String username, String password) {
         // Arrange
         loginPage = new LoginPage(driver);
 
@@ -49,7 +49,7 @@ public class NegativeLoginTests extends BaseTest {
     @Test(dataProvider = "lockedOutUser")
     @Description("Verify locked-out user cannot login")
     @Severity(SeverityLevel.CRITICAL)
-    public void lockedOutUserTest(String username, String password){
+    public void verifyLockedOutUserTest(String username, String password){
         //Arrange
         loginPage = new LoginPage(driver);
 
@@ -59,5 +59,35 @@ public class NegativeLoginTests extends BaseTest {
 
         boolean lockedOutUserErrorDisplayed = loginPage.isLockedOutUserErrorDisplayed();
         Assert.assertTrue(lockedOutUserErrorDisplayed);
+    }
+
+    @Test
+    @Description("Verify login fails when fields are empty")
+    @Severity(SeverityLevel.NORMAL)
+    public void verifyEmptyFieldsTest(){
+        //Arrange
+        loginPage = new LoginPage(driver);
+
+        // Act
+        loginPage.clickOnLoginButton();
+
+        //Assert
+        boolean emptyFieldErrorDisplayed = loginPage.isEmptyFieldErrorDisplayed();
+        Assert.assertTrue(emptyFieldErrorDisplayed);
+    }
+
+    @Test
+    @Description("Verify login fails with blank password")
+    @Severity(SeverityLevel.NORMAL)
+    public void verifyEmptyPasswordFieldTest(){
+        //Arrange
+        loginPage = new LoginPage(driver);
+
+        // Act
+        loginPage.enterCredentials(username, "");
+        loginPage.clickOnLoginButton();
+
+        boolean emptyPasswordFieldErrorDisplayed = loginPage.isEmptyPasswordFieldErrorDisplayed();
+        Assert.assertTrue(emptyPasswordFieldErrorDisplayed);
     }
 }
