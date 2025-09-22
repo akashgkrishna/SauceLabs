@@ -7,10 +7,9 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
     //Locators
-    private final By usernameTextField = By.xpath("//input[@placeholder='Username']");
-    private final By passwordTextField = By.xpath("//input[@placeholder='Password']");
-    private final By loginButton = By.xpath("//span[text()='Login']");
-    private final By registerButton = By.xpath("//span[text()='Register']");
+    private final By usernameTextField = By.id("user-name");
+    private final By passwordTextField = By.id("password");
+    private final By loginButton = By.id("login-button");
 
     //Constructor
     public LoginPage(WebDriver driver) {
@@ -28,7 +27,4 @@ public class LoginPage extends BasePage {
         click(loginButton);
     }
 
-    public void clickOnRegisterButton() {
-        click(registerButton);
-    }
 }

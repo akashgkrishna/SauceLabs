@@ -49,4 +49,15 @@ public class BasePage {
         return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
                 .until(ExpectedConditions.elementToBeClickable(locator));
     }
+
+    public WebElement waitForVisibility(By locator) {
+        WebElement element = driver.findElement(locator);
+        return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
+                .until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public String getText(By locator){
+        WebElement element = driver.findElement(locator);
+        return element.getText();
+    }
 }
