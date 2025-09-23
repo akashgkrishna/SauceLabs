@@ -1,8 +1,6 @@
 package org.saucelabs.login;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.saucelabs.base.BaseTest;
 import org.saucelabs.pages.InventoryPage;
 import org.saucelabs.pages.LoginPage;
@@ -13,7 +11,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     @Description("Verify user can login with valid credentials")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.CRITICAL) @Epic("Login") @Feature("Positive Scenarios")
     public void validLoginTest() {
         //Arrange
         LoginPage loginPage = new LoginPage(driver);

@@ -3,27 +3,11 @@
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
-    <test name="BasicTest">
-        <packages>
-            <package name="org.saucelabs"/>
-        </packages>
-    </test>
 
-    <test name="LoginTest">
+    <test name="Login">
         <packages>
             <package name="org.saucelabs.login"/>
         </packages>
     </test>
 
-    <test name="RegistrationTest">
-        <packages>
-            <package name="org.saucelabs.userregistration"/>
-        </packages>
-    </test>
-
-    <test name="ShoppingCartTest">
-        <packages>
-            <package name="org.saucelabs.shoppingcart"/>
-        </packages>
-    </test>
 </suite>

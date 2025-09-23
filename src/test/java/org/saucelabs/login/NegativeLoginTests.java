@@ -1,48 +1,19 @@
 package org.saucelabs.login;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.saucelabs.base.BaseTest;
 import org.saucelabs.pages.InventoryPage;
 import org.saucelabs.pages.LoginPage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.saucelabs.providers.LoginDataProviders;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.awt.*;
-
 public class NegativeLoginTests extends BaseTest {
-    private static final Logger log = LoggerFactory.getLogger(NegativeLoginTests.class);
     LoginPage loginPage;
-    @DataProvider(name = "invalidLoginCredentials")
-    public Object[][] invalidLoginCredentials() {
-        return new Object[][]{
-                {username, "invalidPassword"},
-                {"invalidUsername", password},
-                {"invalidUsername", "invalidPassword"}
-        };
-    }
 
-    @DataProvider(name = "lockedOutUser")
-    public Object[][] lockedOutUser() {
-        return new Object[][]{
-                {"locked_out_user", password}
-        };
-    }
-
-    @DataProvider(name = "performanceGlitchUser")
-    public Object[][] performanceGlitchUser() {
-        return new Object[][] {
-            {"performance_glitch_user", password}
-        };
-    }
-
-    @Test(dataProvider = "invalidLoginCredentials")
+    @Test(dataProvider = "invalidLoginCredentials", dataProviderClass = LoginDataProviders.class)
     @Description("Verify login fails with incorrect password")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.CRITICAL) @Epic("Login") @Feature("Negative Scenarios")
     public void verifyInvalidLoginTest(String username, String password) {
         // Arrange
         loginPage = new LoginPage(driver);
@@ -56,10 +27,10 @@ public class NegativeLoginTests extends BaseTest {
         Assert.assertTrue(invalidCredentialsErrorDisplayed);
     }
 
-    @Test(dataProvider = "lockedOutUser")
+    @Test(dataProvider = "lockedOutUser", dataProviderClass = LoginDataProviders.class)
     @Description("Verify locked-out user cannot login")
-    @Severity(SeverityLevel.CRITICAL)
-    public void verifyLockedOutUserTest(String username, String password){
+    @Severity(SeverityLevel.CRITICAL) @Epic("Login") @Feature("Negative Scenarios")
+    public void verifyLockedOutUserTest(String username, String password) {
         //Arrange
         loginPage = new LoginPage(driver);
 
@@ -73,8 +44,8 @@ public class NegativeLoginTests extends BaseTest {
 
     @Test
     @Description("Verify login fails when fields are empty")
-    @Severity(SeverityLevel.NORMAL)
-    public void verifyEmptyFieldsTest(){
+    @Severity(SeverityLevel.NORMAL) @Epic("Login") @Feature("Negative Scenarios")
+    public void verifyEmptyFieldsTest() {
         //Arrange
         loginPage = new LoginPage(driver);
 
@@ -88,8 +59,8 @@ public class NegativeLoginTests extends BaseTest {
 
     @Test
     @Description("Verify login fails with blank password")
-    @Severity(SeverityLevel.NORMAL)
-    public void verifyEmptyPasswordFieldTest(){
+    @Severity(SeverityLevel.NORMAL) @Epic("Login") @Feature("Negative Scenarios")
+    public void verifyEmptyPasswordFieldTest() {
         //Arrange
         loginPage = new LoginPage(driver);
 
@@ -101,10 +72,10 @@ public class NegativeLoginTests extends BaseTest {
         Assert.assertTrue(emptyPasswordFieldErrorDisplayed);
     }
 
-    @Test(dataProvider = "performanceGlitchUser")
+    @Test(dataProvider = "performanceGlitchUser", dataProviderClass = LoginDataProviders.class)
     @Description("Verify login works but page loads slowly")
-    @Severity(SeverityLevel.MINOR)
-    public void verifyPerformanceGlitchUser(String username, String password){
+    @Severity(SeverityLevel.MINOR) @Epic("Login") @Feature("Negative Scenarios")
+    public void verifyPerformanceGlitchUser(String username, String password) {
         //Arrange
         loginPage = new LoginPage(driver);
         InventoryPage inventoryPage = new InventoryPage(driver);
