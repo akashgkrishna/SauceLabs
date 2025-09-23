@@ -39,6 +39,10 @@ public class LoginPage extends BasePage {
         click(loginButton);
     }
 
+    public void login(String username, String password){
+        enterCredentials(username, password);
+        clickOnLoginButton();
+    }
     public boolean isInvalidCredentialsErrorDisplayed(){
         return isDisplayed(getErrorMessageLocator(invalidCredentialsMessage));
     }
@@ -54,5 +58,6 @@ public class LoginPage extends BasePage {
     public boolean isEmptyPasswordFieldErrorDisplayed(){
         return isDisplayed(getErrorMessageLocator(emptyPasswordFieldErrorMessage));
     }
+
 
 }
