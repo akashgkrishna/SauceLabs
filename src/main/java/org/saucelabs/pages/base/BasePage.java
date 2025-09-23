@@ -1,13 +1,13 @@
 package org.saucelabs.pages.base;
 
 import io.qameta.allure.Step;
-import org.saucelabs.utils.logging.CustomLogger;
-import org.saucelabs.utils.logging.LogManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.saucelabs.utils.logging.CustomLogger;
+import org.saucelabs.utils.logging.LogManager;
 
 import java.time.Duration;
 
@@ -22,9 +22,6 @@ public class BasePage {
     }
 
 
-    //    TODO Removed @Step so that password is not displayed in report
-//    TODO Find a solution for this
-    @Step("Entering in element {locator}")
     public void sendKeys(String text, By locator) {
         WebElement element = waitForClickable(locator);
         element.sendKeys(text);
@@ -56,7 +53,7 @@ public class BasePage {
                 .until(ExpectedConditions.visibilityOf(element));
     }
 
-    public String getText(By locator){
+    public String getText(By locator) {
         WebElement element = driver.findElement(locator);
         return element.getText();
     }
