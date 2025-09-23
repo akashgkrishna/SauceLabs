@@ -10,4 +10,10 @@
         </packages>
     </test>
 
+    <test name="ShoppingCart">
+        <packages>
+            <package name="org.saucelabs.shoppingcart"/>
+        </packages>
+    </test>
+
 </suite>
