@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class BasePage {
-    private static final int TIMEOUT = 10;
+    private static final int TIMEOUT = 3;
     protected final WebDriver driver;
     protected final CustomLogger logger;
 
