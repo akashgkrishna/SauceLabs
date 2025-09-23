@@ -11,7 +11,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     @Description("Verify user can login with valid credentials")
-    @Severity(SeverityLevel.CRITICAL) @Epic("Login") @Feature("Positive Scenarios")
+    @Severity(SeverityLevel.CRITICAL) @Epic("Login") @Feature("Login Functionality")
     public void validLoginTest() {
         //Arrange
         LoginPage loginPage = new LoginPage(driver);
