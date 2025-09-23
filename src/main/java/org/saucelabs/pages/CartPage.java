@@ -1,5 +1,6 @@
 package org.saucelabs.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,21 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePage {
-    public CartPage(WebDriver driver){
-        super(driver);
-    }
-
     // Locators
     By productLabel = By.cssSelector(".inventory_item_name");
 
+    public CartPage(WebDriver driver) {
+        super(driver);
+    }
 
-    public List<WebElement> getAllProducts(){
+    // Methods
+    @Step("Get list of all available products in cart")
+    public List<WebElement> getAllProducts() {
+        logger.info("Retrieving all product elements from cart");
         return driver.findElements(productLabel);
     }
 
-    public List<String> getProductsName(){
+    @Step("Get list of all available products in cart in string")
+    public List<String> getProductsName() {
+        logger.info("Retrieving all product elements from cart in string");
         List<String> products = new ArrayList<>();
-        for (WebElement element : getAllProducts()){
+        for (WebElement element : getAllProducts()) {
             products.add(element.getText());
         }
         return products;

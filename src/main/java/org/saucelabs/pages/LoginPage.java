@@ -1,26 +1,27 @@
 package org.saucelabs.pages;
 
 import io.qameta.allure.Step;
-import org.saucelabs.pages.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.saucelabs.pages.base.BasePage;
 import org.saucelabs.utils.MessageUtils;
 
 public class LoginPage extends BasePage {
-    // Error messages
-    String invalidCredentialsMessage = MessageUtils.getMessage("invalid.credentials");
-    String lockedOutUserErrorMessage = MessageUtils.getMessage("locked.out.user");
-    String emptyFieldErrorMessage = MessageUtils.getMessage("empty.field");
-    String emptyPasswordFieldErrorMessage = MessageUtils.getMessage("empty.password");
-
     //Locators
     private final By usernameTextField = By.id("user-name");
     private final By passwordTextField = By.id("password");
     private final By loginButton = By.id("login-button");
 
-    public final By getErrorMessageLocator(String message){
-        return By.xpath(String.format("//h3[normalize-space()='%s']",message));
+    // Helper method for error message locator
+    public final By getErrorMessageLocator(String message) {
+        return By.xpath(String.format("//h3[normalize-space()='%s']", message));
     }
+
+    // Error messages
+    String invalidCredentialsMessage = MessageUtils.getMessage("invalid.credentials");
+    String lockedOutUserErrorMessage = MessageUtils.getMessage("locked.out.user");
+    String emptyFieldErrorMessage = MessageUtils.getMessage("empty.field");
+    String emptyPasswordFieldErrorMessage = MessageUtils.getMessage("empty.password");
 
     //Constructor
     public LoginPage(WebDriver driver) {
@@ -28,7 +29,6 @@ public class LoginPage extends BasePage {
     }
 
     // Methods
-    @Step("Entering Credentials username: {username}, password: [PROTECTED]")
     public void enterCredentials(String username, String password) {
         sendKeys(username, usernameTextField);
         sendKeys(password, passwordTextField);
@@ -37,27 +37,36 @@ public class LoginPage extends BasePage {
     @Step("Clicking on Login button")
     public void clickOnLoginButton() {
         click(loginButton);
+        logger.info("Clicked on login button");
     }
 
-    public void login(String username, String password){
+    public void login(String username, String password) {
+        logger.info("Attempting login for user: {}", username);
         enterCredentials(username, password);
         clickOnLoginButton();
     }
-    public boolean isInvalidCredentialsErrorDisplayed(){
+
+    @Step("Verify invalid credentials error is displayed")
+    public boolean isInvalidCredentialsErrorDisplayed() {
+        logger.info("Checking for invalid credentials error");
         return isDisplayed(getErrorMessageLocator(invalidCredentialsMessage));
     }
 
-    public boolean isLockedOutUserErrorDisplayed(){
+    @Step("Verify locked out user error is displayed")
+    public boolean isLockedOutUserErrorDisplayed() {
+        logger.info("Checking for locked out user error");
         return isDisplayed(getErrorMessageLocator(lockedOutUserErrorMessage));
     }
 
-    public boolean isEmptyFieldErrorDisplayed(){
+    @Step("Verify empty field error is displayed")
+    public boolean isEmptyFieldErrorDisplayed() {
+        logger.info("Checking empty field error");
         return isDisplayed(getErrorMessageLocator(emptyFieldErrorMessage));
     }
 
-    public boolean isEmptyPasswordFieldErrorDisplayed(){
+    @Step("Verify empty password field error is displayed")
+    public boolean isEmptyPasswordFieldErrorDisplayed() {
+        logger.info("Checking empty password field error");
         return isDisplayed(getErrorMessageLocator(emptyPasswordFieldErrorMessage));
     }
-
-
 }

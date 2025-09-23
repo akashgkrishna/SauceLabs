@@ -10,52 +10,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryPage extends BasePage {
-    public InventoryPage(WebDriver driver){
-        super(driver);
-    }
-
     // Locators
     By hamburgerMenuButton = By.id("react-burger-menu-btn");
     By logoutButton = By.id("logout_sidebar_link");
     By productsTitle = By.cssSelector(".inventory_item_name ");
     By cartButton = By.id("shopping_cart_container");
 
-    public By addToCartButton(String product){
+    // Helper method for "Add to Cart" button locator for a specific product
+    public By addToCartButton(String product) {
         return By.xpath(
-                "//div[text()='"+product+"']/ancestor::div[@class='inventory_item_description']//button");
+                "//div[text()='" + product + "']/ancestor::div[@class='inventory_item_description']//button");
+    }
+
+    public InventoryPage(WebDriver driver) {
+        super(driver);
     }
 
     // Methods
-    @Step("Clicking on Hamburger menu")
-    public void clickOnHamburgerMenu(){
+    @Step("Open navigation menu")
+    public void clickOnHamburgerMenu() {
+        logger.info("Clicking on hamburger menu");
         click(hamburgerMenuButton);
     }
 
-    public String getLogoutText(){
+    @Step("Get logout option text")
+    public String getLogoutText() {
+        logger.info("Retrieving logout button text");
         waitForVisibility(logoutButton);
         return getText(logoutButton);
     }
 
-    public List<WebElement> getAllProducts(){
+    @Step("Get list of all available products")
+    public List<WebElement> getAllProducts() {
+        logger.info("Retrieving all product elements from inventory");
         return driver.findElements(productsTitle);
     }
 
-    public List<String> getProducts(int count){
+    @Step("Get {count} products from inventory")
+    public List<String> getProducts(int count) {
         List<String> products = new ArrayList<>();
-        for (WebElement element : getAllProducts()){
+
+        for (WebElement element : getAllProducts()) {
             products.add(element.getText());
         }
+
+        logger.info("Getting {} random products from inventory", count);
         int limit = Math.min(count, products.size());
         return products.subList(0, limit);
     }
 
-    public void addProductsToCart(List<String> products){
-        for (String product : products){
+    @Step("Add products to shopping cart")
+    public void addProductsToCart(List<String> products) {
+        logger.info("Starting to add {} products to cart", products.size());
+        for (String product : products) {
             click(addToCartButton(product));
         }
     }
 
-    public void clickOnCartButton(){
+    @Step("Navigating to Cart")
+    public void clickOnCartButton() {
         click(cartButton);
+        logger.info("Clicked on Cart icon");
     }
 }
