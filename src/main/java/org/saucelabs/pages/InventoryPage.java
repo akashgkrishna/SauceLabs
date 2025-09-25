@@ -18,15 +18,16 @@ public class InventoryPage extends BasePage {
     By cartButton = By.id("shopping_cart_container");
     By resetAppStateButton = By.id("reset_sidebar_link");
     By hamburgerMenuCloseButton = By.id("react-burger-cross-btn");
+    By shoppingCartBadge = By.cssSelector(".shopping_cart_badge");
+
+    public InventoryPage(WebDriver driver) {
+        super(driver);
+    }
 
     // Helper method for "Add to Cart" button locator for a specific product
     public By addToCartButton(String product) {
         return By.xpath(
                 "//div[text()='" + product + "']/ancestor::div[@class='inventory_item_description']//button");
-    }
-
-    public InventoryPage(WebDriver driver) {
-        super(driver);
     }
 
     // Methods
@@ -83,5 +84,29 @@ public class InventoryPage extends BasePage {
         click(resetAppStateButton);
         click(hamburgerMenuCloseButton);
         logger.info("App state reset");
+    }
+
+    @Step("Get the cart badge count")
+    public int getBadgeCount() {
+        if (driver.findElements(shoppingCartBadge).isEmpty()) {
+            logger.error("Cart is empty");
+            return 0;
+        }
+        return Integer.parseInt(getText(shoppingCartBadge));
+    }
+
+    @Step("Check if cart has products")
+    public boolean hasProductsInCart() {
+        return getBadgeCount() > 0;
+    }
+
+    @Step("Reset app state if cart has products")
+    public void resetAppIfNeeded() {
+        if (hasProductsInCart()) {
+            resetAppState();
+            logger.info("App state reset because cart had leftover products");
+        } else {
+            logger.info("No products in cart, skipping reset");
+        }
     }
 }
