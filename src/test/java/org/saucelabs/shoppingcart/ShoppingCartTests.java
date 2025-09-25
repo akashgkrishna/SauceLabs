@@ -17,21 +17,23 @@ public class ShoppingCartTests extends BaseTest {
     CartPage cartPage;
 
     @BeforeMethod
-    public void login(){
+    public void login() {
         loginPage = new LoginPage(driver);
         inventoryPage = new InventoryPage(driver);
         cartPage = new CartPage(driver);
         loginPage.login(username, password);
 
-        inventoryPage.resetAppState();
+        inventoryPage.resetAppIfNeeded();
     }
 
     @Test
     @Description("Verify user can add a product to cart")
-    @Severity(SeverityLevel.CRITICAL) @Epic("Shopping Cart") @Feature("Add to Cart")
-    public void verifyAddSingleProductToCartTest(){
+    @Severity(SeverityLevel.CRITICAL)
+    @Epic("Shopping Cart")
+    @Feature("Add to Cart")
+    public void verifyAddSingleProductToCartTest() {
         // Arrange
-        List<String> products= inventoryPage.getProducts(1);
+        List<String> products = inventoryPage.getProducts(1);
 
         // Act
         inventoryPage.addProductsToCart(products);
@@ -45,10 +47,12 @@ public class ShoppingCartTests extends BaseTest {
 
     @Test
     @Description("Verify user can add multiple products")
-    @Severity(SeverityLevel.CRITICAL) @Epic("Shopping Cart") @Feature("Add to Cart")
-    public void verifyAddMultipleProductsToCart(){
+    @Severity(SeverityLevel.CRITICAL)
+    @Epic("Shopping Cart")
+    @Feature("Add to Cart")
+    public void verifyAddMultipleProductsToCart() {
         // Arrange
-        List<String> products= inventoryPage.getProducts(4);
+        List<String> products = inventoryPage.getProducts(4);
 
         // Act
         inventoryPage.addProductsToCart(products);
@@ -58,5 +62,25 @@ public class ShoppingCartTests extends BaseTest {
         boolean areProductsMatching = cartPage.isProductsAddedToCart(products);
         Assert.assertTrue(areProductsMatching,
                 "Products in cart do not match the products added.");
+    }
+
+    @Test
+    @Description("Verify user can remove product from cart")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("Shopping Cart")
+    @Feature("Remove from Cart")
+    public void verifyRemoveProductFromCartTest() {
+        // Arrange
+        List<String> products = inventoryPage.getProducts(4);
+
+        // Act
+        inventoryPage.addProductsToCart(products);
+        inventoryPage.clickOnCartButton();
+        cartPage.removeProductsFromCart();
+
+        // Assert
+        boolean isCartEmpty = cartPage.isCartEmpty();
+        Assert.assertTrue(isCartEmpty,
+                "Cart is not empty after removing all products.");
     }
 }
