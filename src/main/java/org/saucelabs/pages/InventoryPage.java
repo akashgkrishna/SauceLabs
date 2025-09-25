@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.saucelabs.pages.base.BasePage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InventoryPage extends BasePage {
@@ -15,15 +16,18 @@ public class InventoryPage extends BasePage {
     By logoutButton = By.id("logout_sidebar_link");
     By productsTitle = By.cssSelector(".inventory_item_name ");
     By cartButton = By.id("shopping_cart_container");
+    By resetAppStateButton = By.id("reset_sidebar_link");
+    By hamburgerMenuCloseButton = By.id("react-burger-cross-btn");
+    By shoppingCartBadge = By.cssSelector(".shopping_cart_badge");
+
+    public InventoryPage(WebDriver driver) {
+        super(driver);
+    }
 
     // Helper method for "Add to Cart" button locator for a specific product
     public By addToCartButton(String product) {
         return By.xpath(
                 "//div[text()='" + product + "']/ancestor::div[@class='inventory_item_description']//button");
-    }
-
-    public InventoryPage(WebDriver driver) {
-        super(driver);
     }
 
     // Methods
@@ -53,7 +57,7 @@ public class InventoryPage extends BasePage {
         for (WebElement element : getAllProducts()) {
             products.add(element.getText());
         }
-
+        Collections.shuffle(products);
         logger.info("Getting {} random products from inventory", count);
         int limit = Math.min(count, products.size());
         return products.subList(0, limit);
@@ -63,6 +67,7 @@ public class InventoryPage extends BasePage {
     public void addProductsToCart(List<String> products) {
         logger.info("Starting to add {} products to cart", products.size());
         for (String product : products) {
+            waitForVisibility(addToCartButton(product));
             click(addToCartButton(product));
         }
     }
@@ -71,5 +76,45 @@ public class InventoryPage extends BasePage {
     public void clickOnCartButton() {
         click(cartButton);
         logger.info("Clicked on Cart icon");
+    }
+
+    @Step("Reset app state from menu")
+    public void resetAppState() {
+        click(hamburgerMenuButton);
+        click(resetAppStateButton);
+        click(hamburgerMenuCloseButton);
+        logger.info("App state reset");
+    }
+
+    @Step("Get the cart badge count")
+    public int getBadgeCount() {
+        logger.info("Getting the cart badge count");
+        if (driver.findElements(shoppingCartBadge).isEmpty()) {
+            logger.error("Cart is empty");
+            return 0;
+        }
+        return Integer.parseInt(getText(shoppingCartBadge));
+    }
+
+    @Step("Check if cart has products")
+    public boolean hasProductsInCart() {
+        return getBadgeCount() > 0;
+    }
+
+    @Step("Reset app state if cart has products")
+    public void resetAppIfNeeded() {
+        if (hasProductsInCart()) {
+            resetAppState();
+            logger.info("App state reset because cart had leftover products");
+        } else {
+            logger.info("No products in cart, skipping reset");
+        }
+    }
+
+    @Step("Logout")
+    public void logout(){
+        logger.info("Logging out");
+        click(hamburgerMenuButton);
+        click(logoutButton);
     }
 }
