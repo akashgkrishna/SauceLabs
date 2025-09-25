@@ -103,4 +103,27 @@ public class ShoppingCartTests extends BaseTest {
                 "The Badge count does not match the  items added");
 
     }
+
+    @Test
+    @Description("Verify that the items added to cart remain even after logging out" +
+            " and logging in again")
+    @Severity(SeverityLevel.CRITICAL)
+    @Epic("Shopping Cart")
+    @Feature("Add to Cart / Persistence")
+    public void verifyCartPersistenceAfterLogoutAndLoginTest() {
+        // Arrange
+        List<String> products = inventoryPage.getProducts(2);
+
+        // Act
+        inventoryPage.addProductsToCart(products);
+        inventoryPage.logout();
+
+        loginPage.login(username, password);
+        inventoryPage.clickOnCartButton();
+
+        // Assert
+        boolean areProductsMatching = cartPage.isProductsAddedToCart(products);
+        Assert.assertTrue(areProductsMatching,
+                "Products in cart do not match the products added.");
+    }
 }

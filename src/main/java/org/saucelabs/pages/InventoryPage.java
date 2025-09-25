@@ -110,4 +110,11 @@ public class InventoryPage extends BasePage {
             logger.info("No products in cart, skipping reset");
         }
     }
+
+    @Step("Logout")
+    public void logout(){
+        logger.info("Logging out");
+        click(hamburgerMenuButton);
+        click(logoutButton);
+    }
 }
