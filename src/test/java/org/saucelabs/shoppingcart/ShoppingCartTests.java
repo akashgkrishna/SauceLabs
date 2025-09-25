@@ -22,6 +22,8 @@ public class ShoppingCartTests extends BaseTest {
         inventoryPage = new InventoryPage(driver);
         cartPage = new CartPage(driver);
         loginPage.login(username, password);
+
+        inventoryPage.resetAppState();
     }
 
     @Test
@@ -36,8 +38,25 @@ public class ShoppingCartTests extends BaseTest {
         inventoryPage.clickOnCartButton();
 
         // Assert
-        String productFromCart = cartPage.getProductsName().getFirst();
-        Assert.assertEquals(productFromCart, products.getFirst());
+        String productFromCart = cartPage.getProductNames().getFirst();
+        Assert.assertEquals(productFromCart, products.getFirst(),
+                "Product in cart do not match the product added.");
+    }
 
+    @Test
+    @Description("Verify user can add multiple products")
+    @Severity(SeverityLevel.CRITICAL) @Epic("Shopping Cart") @Feature("Add to Cart")
+    public void verifyAddMultipleProductsToCart(){
+        // Arrange
+        List<String> products= inventoryPage.getProducts(4);
+
+        // Act
+        inventoryPage.addProductsToCart(products);
+        inventoryPage.clickOnCartButton();
+
+        // Assert
+        boolean areProductsMatching = cartPage.isProductsAddedToCart(products);
+        Assert.assertTrue(areProductsMatching,
+                "Products in cart do not match the products added.");
     }
 }
