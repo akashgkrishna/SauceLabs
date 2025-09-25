@@ -83,4 +83,24 @@ public class ShoppingCartTests extends BaseTest {
         Assert.assertTrue(isCartEmpty,
                 "Cart is not empty after removing all products.");
     }
+
+    @Test
+    @Description("Verify cart badge updates correctly")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("Shopping Cart")
+    @Feature("Cart UI")
+    public void verifyCartBadgeUpdatesCorrectlyTest() {
+        // Arrange
+        int productsToAddCount = 4;
+        List<String> products = inventoryPage.getProducts(productsToAddCount);
+
+        // Act
+        inventoryPage.addProductsToCart(products);
+
+        // Assert
+        int badgeCount = inventoryPage.getBadgeCount();
+        Assert.assertEquals(badgeCount, productsToAddCount,
+                "The Badge count does not match the  items added");
+
+    }
 }

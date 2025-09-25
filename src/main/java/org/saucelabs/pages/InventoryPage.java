@@ -88,6 +88,7 @@ public class InventoryPage extends BasePage {
 
     @Step("Get the cart badge count")
     public int getBadgeCount() {
+        logger.info("Getting the cart badge count");
         if (driver.findElements(shoppingCartBadge).isEmpty()) {
             logger.error("Cart is empty");
             return 0;
