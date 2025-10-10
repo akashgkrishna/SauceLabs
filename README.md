@@ -1,12 +1,10 @@
-
-# BookCart Test Automation Framework
+# SauceLabs Test Automation Framework
 
 [![Java](https://img.shields.io/badge/Java-22-blue)](https://www.java.com/)  [![Selenium](https://img.shields.io/badge/Selenium-4.27.0-green)](https://www.selenium.dev/)  [![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red)](https://testng.org/)  [![Logback](https://img.shields.io/badge/Logback-1.5.16-lightgrey)](https://logback.qos.ch/)  [![Allure](https://img.shields.io/badge/Allure-2.29.1-blueviolet)](https://docs.qameta.io/allure/) [![Lombok](https://img.shields.io/badge/Lombok-1.18.36-pink)](https://projectlombok.org/)
 
-A Selenium-based, cross-browser test automation framework for the BookCart web application, supporting multiple environments, data-driven testing, reporting with Allure and custom logging.
+A Selenium-based, cross-browser test automation framework for the SauceDemo web application, supporting multiple environments, data-driven testing, reporting with Allure and custom logging.
 
 ## Table of Contents
-
 -   [Features](#features)
 -   [Prerequisites](#prerequisites)
 -   [Installation](#installation)
@@ -16,81 +14,86 @@ A Selenium-based, cross-browser test automation framework for the BookCart web a
 -   [Project Structure](#project-structure)
 -   [Best Practices](#best-practices)
 -   [Future Roadmap](#future-roadmap)
+-   [Report Issues](#report-issues)
 -   [License](#license)
 
-
 ## Features
--   **Environment Config**: Easily switch between QA, Staging, and Production via `config.properties` and system properties.
--   **Driver Management**: Centralized driver handling.
--   **Page Object Model (POM)**: Structured POM with separate packages for base pages, common components, and specialized pages.
--   **Test Flow Abstraction**: Business logic encapsulated in flow classes (e.g., `LoginFlow`, `UserRegistrationFlow`).
--   **Data-Driven Testing**: Centralized data generation with TestNG data providers for unique test runs.
--   **Allure Reporting**: Auto-attached step annotations, failure screenshots, test descriptions, severity levels, and TMS links.
--   **Custom Logging**: SLF4J/Logback with custom logger for clear, secure logs.
--   **Lombok Integration**: Clean models with `@Builder`.
--   **AspectJ Weaving**: Runtime instrumentation for enhanced reporting.
--   **Smart Waits**: Mix of explicit waits and utility methods.
--   **Headless Execution**: Configurable via `config.properties`.
+
+- **Environment Config:** Easily switch between QA, Staging, and Production via `config.properties` and system properties.
+- **Driver Management:** Centralized driver handling for Chrome, Firefox, Safari, and Edge.
+- **Page Object Model (POM):** Structured POM with separate packages for base and specialized pages.
+- **Test Flow Abstraction:** Business logic encapsulated in flow classes (e.g., `LoginFlow`, `ShoppingCartFlow`).
+- **Data-Driven Testing:** Centralized data generation with TestNG data providers for unique test runs.
+- **Allure Reporting:** Auto-attached step annotations, failure screenshots, test descriptions, and severity levels.
+- **Custom Logging:** SLF4J/Logback with custom logger for clear, secure logs.
+- **Lombok Integration:** Clean models using `@Builder` and `@Getter`.
+- **AspectJ Weaving:** Runtime instrumentation for enhanced reporting.
+- **Smart Waits:** Mix of explicit waits and utility methods.
+- **Headless Execution:** Configurable via `config.properties`.
 
 ## Prerequisites
 
--   **Java 22 JDK**
--   **Maven 3.6+**
--   **Chrome Browser (latest)**
--   **IDE** (IntelliJ/Eclipse/VSCode)
+- **Java 22 JDK**
+- **Maven 3.6+**
+- **Latest Chrome/Firefox Browser**
+- **IDE:** IntelliJ IDEA / Eclipse / VSCode
 
 ## Installation
 
-1. Clone the repository:  
-   `git clone git@github.com:akashgkrishna/BookCart.git `
-2. Build the project:  
-   `mvn clean install`
+Clone the repository:
+```bash
+git clone git@github.com:akashgkrishna/SauceLabs.git
+```
+Build the project:
 
-## Configuration
-
-### Environment Setup: (`config.properties`)
-- Edit `src/main/resources/config.properties` to modify environment URLs
-- Supported environments: QA, Prod, Staging
-- Default environment: QA
-```properties
-# Environment URLs
-qa.url=https://bookcart.azurewebsites.net/
-staging.url=https://staging-bookcart.azurewebsites.net/
-prod.url=https://prod-bookcart.azurewebsites.net/
-
-# Credentials
-qa.username=qa_user
-qa.password=qa_password
-staging.username=staging_user
-staging.password=staging_password
-prod.username=prod_user
-prod.password=prod_password
-
+```bash
+mvn clean install
 ```
 
-### Log Configuration: (`logback.xml`)
+## Configuration
+### Environment Setup – `config.properties`
+**Add/ Edit** `src/main/resources/config.properties` to modify environment URLs.
 
+```properties
+# Environment URLs
+qa.url=https://www.saucedemo.com/
+staging.url=https://staging.saucedemo.com/
+prod.url=https://prod.saucedemo.com/
+
+# Browser configuration "chrome", "firefox", "edge", "safari"
+browser=firefox
+headless=false
+
+# Credentials
+qa.username=standard_user
+qa.password=secret_sauce
+
+staging.username=testguy
+staging.password=Testguy1
+
+prod.username=test01
+prod.password=Test@001
+```
+
+### Log Configuration – `logback.xml`
 ```xml
-<!-- Configure logging patterns and output locations -->
-<root level="trace">
+<root level="info">
     <appender-ref ref="CONSOLE"/>
     <appender-ref ref="FILE"/>
 </root>
-
 ```
-### Browser setup:
-- Currently, supports (Chrome, Firefox, Safari and Edge)
-- Chrome is the default browser .
-- If you want other drivers just add the appropriate WebDriver instance in DriverManager class
-
+### Browser Setup
+-   Currently, supports Chrome, Firefox, Safari and Edge
+-   Firefox is the default browser
+-   Configure via `browser` property in `config.properties`
 
 ```properties
 # Browser configuration  
 browser=chrome  
 headless=true
 ```
-### Safari Browser setup:
-Safari's settings need to be adjusted to allow automation.
+### Safari Browser Setup
+Safari's settings need to be adjusted to allow automation.  
 Follow these steps:
 
 1.  **Enable the Develop Menu:**  
@@ -102,41 +105,38 @@ Follow these steps:
 3.  **Restart Safari:**  
     After enabling the setting, close Safari and re-launch it to ensure the changes take effect.
 
-
-These adjustments should allow SafariDriver to create a new session successfully.
-
-### Lombok setup
+### Lombok Setup
 Verify Lombok is enabled in your IDE. Without Lombok processing, none of the builder methods or getters (provided by `@Getter` and `@Builder`) are generated.
 
 **1. Add Lombok Dependency:**  
 Ensure that your `pom.xml` contains the Lombok dependency. For example:
 ```xml
 <dependency> 
-	<groupId>org.projectlombok</groupId>
-	<artifactId>lombok</artifactId> 
-	<version>1.18.24</version> 
-	<scope>provided</scope> 
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId> 
+    <version>1.18.36</version> 
+    <scope>provided</scope> 
 </dependency>
 ```
 **2. Enable Annotation Processing:**
 
--   If you’re using an IDE like IntelliJ IDEA or Eclipse, make sure that annotation processing is enabled.
-    -   For Maven, the compiler plugin should pick up Lombok annotations if the dependency is correctly added.
+-   If you're using an IDE like IntelliJ IDEA or Eclipse, make sure that annotation processing is enabled.
+
 
 **3. Clean and Rebuild:**  
 After adjusting your configuration, perform a clean build (e.g., `mvn clean compile`) to verify that Lombok generates the expected methods.
-
 
 ### Allure Configuration (`allure.properties`)
 ```properties
 allure.results.directory=target/allure-results
 ```
-
 ### Error Messages (`error-messages.properties`)
-
 ```properties
-invalid.username=User Name is not available
-invalid.password=Password requirements not met
+#Login Page Errors
+invalid.credentials=Epic sadface: Username and password do not match any user in this service
+locked.out.user=Epic sadface: Sorry, this user has been locked out.
+empty.field=Epic sadface: Username is required
+empty.password=Epic sadface: Password is required
 ```
 
 ### TestNG Suite (`testng.xml`)
@@ -145,30 +145,21 @@ invalid.password=Password requirements not met
     <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
 </listeners>
 ```
-
-
-
 ## Execution
-
-### Default (QA Environment):
-
+### Default (QA Environment - SauceDemo):
 ```bash
 mvn test
 ```
-
 ### Specific Environment:
-
 ```bash
 mvn test -Denv=prod
 ```
-
 ### Supported Environments:
-
--   `-Denv=qa` (default)
+-   `-Denv=qa` (default) - SauceDemo
 -   `-Denv=staging`
 -   `-Denv=prod`
-### Generate Allure Report
 
+### Generate Allure Report
 ```bash
 mvn allure:serve
 ```
@@ -178,7 +169,7 @@ mvn allure:serve
 ### Usage in Tests:
 
 ```java
-public class BasicTest extends BaseTest {
+public class LoginTest extends BaseTest {
     @Test
     public void exampleTest() {
         logger.info("Using credentials: {}", username);
@@ -186,94 +177,89 @@ public class BasicTest extends BaseTest {
     }
 }
 ```
-
 ### Log Outputs:
-
+```text
+14:23:45 INFO  [TestNG] o.s.LoginTest - Using credentials: standard_user
+14:23:46 ERROR [TestNG] o.s.LoginTest - Validation failed!
 ```
-14:23:45 INFO  [TestNG] o.b.BasicTest - Using credentials: test01
-14:23:46 ERROR [TestNG] o.b.BasicTest - Validation failed!
-```
-
 ## Project Structure
-
-```
-├── LICENSE                           // License information (e.g., MIT License)
-├── README.md                         // Project documentation and usage instructions
+```text
+├── LICENSE                           // License information (MIT License)
 ├── pom.xml                           // Maven configuration with dependencies and build plugins
+├── README.md                         // Project documentation and usage instructions
 └── src
     ├── main
-    │   ├── java/org/bookcart/         // Main application code
-    │   │   ├── base/                  // Base test classes (e.g., BaseTest.java for setup/teardown)
-    │   │   ├── data/                  // Test data factories (e.g., UserDataFactory.java)
-    │   │   ├── driver/                // WebDriver management (e.g., DriverManager.java)
-    │   │   ├── flows/                 // Business logic flows (e.g., LoginFlow.java, UserRegistrationFlow.java)
-    │   │   ├── model/                 // Data models (e.g., User.java)
-    │   │   ├── pages/                 // Page Object Model classes (e.g., LoginPage.java, RegisterPage.java)
-    │   │   └── util/                  // Utility classes for various common functionalities:
+    │   ├── java/org/saucelabs/       // Main application code
+    │   │   ├── base/                 // Base test classes (BaseTest.java for setup/teardown)
+    │   │   ├── driver/               // WebDriver management (DriverManager.java)
+    │   │   ├── flows/                // Business logic flows (LoginFlow.java, ShoppingCartFlow.java)
+    │   │   ├── model/                // Data models (User.java)
+    │   │   ├── pages/                // Page Object Model classes
+    │   │   │   ├── base/             // Base page class
+    │   │   │   ├── common/           // Common components (Header, HomePage)
+    │   │   │   ├── CartPage.java     // Shopping cart page
+    │   │   │   ├── InventoryPage.java// Product inventory page
+    │   │   │   ├── LoginPage.java    // Login page
+    │   │   │   └── RegisterPage.java // Registration page
+    │   │   └── utils/                // Utility classes
     │   │       ├── ConfigManager.java         // Loads and manages configuration properties
-    │   │       ├── CredentialsManager.java    // Retrieves user credentials based on the environment
-    │   │       ├── MessageUtils.java          // Handles common messages (e.g., error/info messages)
-    │   │       ├── ScreenshotUtils.java       // Captures screenshots for reporting, especially on failures
-    │   │       ├── WaitUtils.java             // Provides explicit wait methods for synchronizing tests
-    │   │       └── logging/                   // Custom logging utilities:
-    │   │           ├── CustomLogger.java      // Wrapper for logging functionality (using SLF4J/Logback)
-    │   │           └── LogManager.java        // Factory for instantiating and managing loggers
-    │   └── resources/                 // Application configuration files
-    │       ├── config.properties      // Environment URLs, credentials, and other settings
-    │       └── logback.xml            // Logging configuration (patterns, output locations)
+    │   │       ├── CredentialsManager.java    // Retrieves user credentials based on environment
+    │   │       ├── MessageUtils.java          // Handles common messages
+    │   │       ├── ScreenshotUtils.java       // Captures screenshots for reporting
+    │   │       ├── WaitUtils.java             // Provides explicit wait methods
+    │   │       └── logging/                   // Custom logging utilities
+    │   └── resources/                // Application configuration files
+    │       ├── config.properties      // Environment URLs, credentials, and browser settings
+    │       └── logback.xml            // Logging configuration
     └── test
-        ├── java/org/bookcart/         // Test code
-        │   ├── login/                 // Login-related test classes:
-        │   ├── providers/             // Data providers for tests:
-        │   │   └── UserDataProviders.java   // Supplies dynamic test data for user-related tests
-        │   └── userregistration/      // User registration test
-        └── resources/                 // Test configuration files
-            ├── allure.properties      // Configuration for Allure reporting
+        ├── java/org/saucelabs/       // Test code
+        │   ├── login/                // Login-related test classes
+        │   ├── providers/            // Data providers for tests
+        │   └── shoppingcart/         // Shopping cart tests
+        └── resources/                // Test configuration files
+            ├── allure.properties     // Configuration for Allure reporting
             ├── error-messages.properties  // Common error messages used in tests
-            └── testng.xml           // TestNG suite configuration for test execution
-
-
-
-```
+            └── testng.xml            // TestNG suite configuration
+            
+ ```
 
 ## Best Practices
 
 ### Logger Usage
-
 ```java
 // Good
 logger.info("Loading page: {}", url);
 
 // Avoid
 System.out.println("Loading page: " + url);
-
 ```
-
 ### Environment Isolation
-
 ```bash
 # Never commit production credentials
 # Keep sensitive data in environment variables
-
 ```
-
 ### Allure Reporting
-**Add the necessary Annotations in test**
+
+**Add the necessary Annotations in test**  
 Example:
 ```java
-@Test(dataProviderClass = UserDataProviders.class,  
-        dataProvider = "invalidRegistrationData")  
-@Description("Verify that registration fails when user enters existing username")  
-@TmsLink("CEL-TC-46")  
+@Test
+@Description("Verify user can login with valid credentials")
 @Severity(SeverityLevel.CRITICAL)
+@Epic("Login")
+@Feature("Login Functionality")
+public void validLoginTest() {
+    // Test implementation
+}
 ```
-**Add proper Step when needed**
+
+**Add proper Step when needed**  
 Example:
 ```java
-@Step("Entering Credentials")  
-public void enterCredentials(String username, String password) {  
-    sendKeys(username, usernameTextField);  
-    sendKeys(password, passwordTextField);  
+@Step("Entering credentials")
+public void enterCredentials(String username, String password) {
+    sendKeys(username, usernameTextField);
+    sendKeys(password, passwordTextField);
 }
 ```
 
@@ -283,34 +269,57 @@ public void enterCredentials(String username, String password) {
 @Getter
 @Builder
 public class User {
-    private final String username;
+    private final String firstName;
+    private final String lastName;
+    private final String userName;
     private final String password;
 }
 ```
 ### Data-Driven Testing
 
 ```java
-@DataProvider
-public Object[][] invalidLogins() {
+@DataProvider(name = "invalidLoginCredentials")
+public Object[][] invalidLoginCredentials() {
     return new Object[][]{
-            {"invalidUser", "wrongPass"},
-            {"lockedUser", "secret123"}
+            {"standard_user", "invalidPassword"},
+            {"invalidUsername", "secret_sauce"}
     };
 }
 ```
 
+## Test Coverage
+
+The framework currently supports:
+
+-   **Login Functionality**: Valid and invalid login scenarios, locked out user, performance glitch user
+
+-   **Shopping Cart**: Add/remove products, cart badge updates, cart persistence
+
+-   **User Registration**: New user registration with validation
+
+
 ## Future Roadmap
 
--   Add BrowserStack Integration
+-   Add Sauce Labs Cloud Integration
+
 -   Create CI/CD Pipeline
--  Grouping Tests
--  Parallel Testing -TestNG parallel test runs
-- Docker Support - Containerized test execution
+
+-   Grouping Tests
+
+-   Parallel Testing - TestNG parallel test runs
+
+-   Docker Support - Containerized test execution
+
+-   API Testing Integration
+
+-   Mobile Testing Support
+
 
 ## Report Issues
 
--   [GitHub Issues](https://github.com/akashgkrishna/BookCart/issues)
+-   [GitHub Issues](https://github.com/akashgkrishna/SauceLabs/issues)
+
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/akashgkrishna/BookCart/blob/main/LICENSE)
+This project is licensed under the [MIT License](https://github.com/akashgkrishna/SauceLabs/blob/main/LICENSE)
