@@ -199,8 +199,7 @@ public class LoginTest extends BaseTest {
     │   │   │   ├── common/           // Common components (Header, HomePage)
     │   │   │   ├── CartPage.java     // Shopping cart page
     │   │   │   ├── InventoryPage.java// Product inventory page
-    │   │   │   ├── LoginPage.java    // Login page
-    │   │   │   └── RegisterPage.java // Registration page
+    │   │   │   └── LoginPage.java    // Login page
     │   │   └── utils/                // Utility classes
     │   │       ├── ConfigManager.java         // Loads and manages configuration properties
     │   │       ├── CredentialsManager.java    // Retrieves user credentials based on environment
@@ -295,12 +294,7 @@ The framework currently supports:
 
 -   **Shopping Cart**: Add/remove products, cart badge updates, cart persistence
 
--   **User Registration**: New user registration with validation
-
-
 ## Future Roadmap
-
--   Add Sauce Labs Cloud Integration
 
 -   Create CI/CD Pipeline
 
